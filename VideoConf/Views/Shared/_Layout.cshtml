@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - VideoConf</title>
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="~/css/chat.css" rel="stylesheet" />
+    <title>Build your first Twilio Video application</title>
+    <style type="text/css">
+        .textName {
+            position: absolute;
+            z-index: 9999;
+            color: white;
+            top: 179px;
+            margin-left: 43px;
+            background: black;
+            padding: 3px;
+            opacity: 0.8;
+            width: 200px;
+        }
+
+        .video {
+            position: absolute;
+            z-index: 9999;
+            left: 84%;
+            top: 4%;
+        }
+
+        .audio {
+            position: absolute;
+            z-index: 9999;
+            left: 87%;
+            top: 9%;
+        }
+
+        .name {
+            top: 3%;
+            left: 4%;
+            margin: 0;
+            padding: 0.5em 0.5em 0.5em 2em;
+            background: rgba(242, 47, 70, 0.8);
+            color: #fff;
+            font-size: 16px;
+            line-height: 1;
+            z-index: 9999;
+        }
+
+           /* .name::after {
+                content: "";
+                height: 0;
+                width: 0;
+                position: absolute;
+                top: 0;
+                right: -2em;
+                border: 1em solid rgba(242, 47, 70, 0.8);
+                border-right-color: transparent;
+                border-bottom-color: transparent;
+            }*/
+
+        #video-container {
+            position: relative;
+        }
+
+            #video-container::before {
+                content: "";
+                position: absolute;
+                bottom: 8px;
+                right: 8px;
+                width: 140px;
+                height: 32px;
+                background: url(./powered-by-twilio.png);
+                background-size: cover;
+            }
+
+        .col-md-6 {
+            width: 48% !important;
+            float: left !important;
+            margin: 10px !important;
+        }
+
+        .hostUser {
+            width: 100%;
+            clear: both;
+            float: left;
+        }
+        .guestUser {
+            width: 100%;
+            height: 100%;
+        }
+        #participants > div > video {
+            display: block;
+            margin: 0 auto;
+            border-radius: 6px;
+            width: 230px !important;
+        }
+    </style>
+</head>
+<body>    
+   
+            @RenderBody()
+     
+   
+  
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
