@@ -33,7 +33,7 @@ window.addEventListener("load", () => {
     //        });
     //});
 
-    var identity = getUrlParameter("name") + Math.floor(Math.random() * 100); 
+    var identity = getUrlParameter("name") + "-" + Math.floor(Math.random() * 100);
     //login.setAttribute("hidden", "true");
     // Fetch the access token
     data = "{identity:'" + identity + "'}";
@@ -217,7 +217,8 @@ window.addEventListener("load", () => {
         AudioOn.appendChild(AudioOnIcon);
 
         el.appendChild(guestName);       
-        document.getElementById("p_" + hostUser).innerHTML = getUrlParameter("name");
+        var userName = hostUser.split("-");
+        document.getElementById("p_" + hostUser).innerHTML = userName[0];
 
         navigator.getMedia = (navigator.getUserMedia || // use the proper vendor prefix
             navigator.webkitGetUserMedia ||

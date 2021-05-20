@@ -35,28 +35,28 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/24/2021 20:49:40</publishTime>
     </File>
     <File Include="VideoConf.deps.json">
-      <publishTime>05/20/2021 10:36:27</publishTime>
+      <publishTime>05/20/2021 17:23:49</publishTime>
     </File>
     <File Include="VideoConf.dll">
-      <publishTime>05/20/2021 10:36:24</publishTime>
+      <publishTime>05/20/2021 17:23:46</publishTime>
     </File>
     <File Include="VideoConf.exe">
-      <publishTime>05/20/2021 10:36:24</publishTime>
+      <publishTime>05/20/2021 17:23:46</publishTime>
     </File>
     <File Include="VideoConf.pdb">
-      <publishTime>05/20/2021 10:36:24</publishTime>
+      <publishTime>05/20/2021 17:23:46</publishTime>
     </File>
     <File Include="VideoConf.runtimeconfig.json">
       <publishTime>05/19/2021 19:17:12</publishTime>
     </File>
     <File Include="VideoConf.Views.dll">
-      <publishTime>05/20/2021 10:36:26</publishTime>
+      <publishTime>05/20/2021 17:23:49</publishTime>
     </File>
     <File Include="VideoConf.Views.pdb">
-      <publishTime>05/20/2021 10:36:26</publishTime>
+      <publishTime>05/20/2021 17:23:49</publishTime>
     </File>
     <File Include="web.config">
-      <publishTime>05/20/2021 10:36:27</publishTime>
+      <publishTime>05/20/2021 17:23:49</publishTime>
     </File>
     <File Include="wwwroot/css/chat.css">
       <publishTime>05/19/2021 14:01:54</publishTime>
@@ -65,7 +65,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/18/2021 11:31:13</publishTime>
     </File>
     <File Include="wwwroot/css/style.css">
-      <publishTime>05/19/2021 20:04:16</publishTime>
+      <publishTime>05/20/2021 13:47:19</publishTime>
     </File>
     <File Include="wwwroot/favicon.ico">
       <publishTime>05/18/2021 11:31:13</publishTime>
@@ -77,7 +77,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/18/2021 11:31:13</publishTime>
     </File>
     <File Include="wwwroot/js/video.js">
-      <publishTime>05/20/2021 10:36:10</publishTime>
+      <publishTime>05/20/2021 17:23:24</publishTime>
     </File>
     <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css">
       <publishTime>05/18/2021 11:31:13</publishTime>

@@ -1,9 +1,7 @@
 C:\Users\qutubuddin.haider\source\repos\VideoConf\VideoConf\obj\Release\netcoreapp3.1\PubTmp\Out\VideoConf.exe
-C:\Users\qutubuddin.haider\source\repos\VideoConf\VideoConf\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\css\chat.css
 C:\Users\qutubuddin.haider\source\repos\VideoConf\VideoConf\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\css\site.css
 C:\Users\qutubuddin.haider\source\repos\VideoConf\VideoConf\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\css\style.css
 C:\Users\qutubuddin.haider\source\repos\VideoConf\VideoConf\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\favicon.ico
-C:\Users\qutubuddin.haider\source\repos\VideoConf\VideoConf\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\chat.js
 C:\Users\qutubuddin.haider\source\repos\VideoConf\VideoConf\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\site.js
 C:\Users\qutubuddin.haider\source\repos\VideoConf\VideoConf\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\video.js
 C:\Users\qutubuddin.haider\source\repos\VideoConf\VideoConf\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css

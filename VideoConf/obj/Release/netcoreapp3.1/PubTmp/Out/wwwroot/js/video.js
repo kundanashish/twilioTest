@@ -33,7 +33,7 @@ window.addEventListener("load", () => {
     //        });
     //});
 
-    var identity = getUrlParameter("name");
+    var identity = getUrlParameter("name") + "-" + Math.floor(Math.random() * 100);
     //login.setAttribute("hidden", "true");
     // Fetch the access token
     data = "{identity:'" + identity + "'}";
@@ -74,46 +74,46 @@ window.addEventListener("load", () => {
             window.addEventListener("pagehide", tidyUp(room));
 
 
-            document.getElementById("mute").onclick = function () {
+            document.getElementById("mute" + identity).onclick = function () {
                 console.log("Mute");
-                document.getElementById("unmute").style.display = 'block';
-                document.getElementById("mute").style.display = 'none';
+                document.getElementById("unmute" + identity).style.display = 'block';
+                document.getElementById("mute" + identity).style.display = 'none';
                 room.localParticipant.audioTracks.forEach(function (track) {
                     track.track.disable();
                 })
             }
 
-            document.getElementById("unmute").onclick = function () {
+            document.getElementById("unmute" + identity).onclick = function () {
                 console.log("Unmute");
-                document.getElementById("unmute").style.display = 'none';
-                document.getElementById("mute").style.display = 'block';
+                document.getElementById("unmute" + identity).style.display = 'none';
+                document.getElementById("mute" + identity).style.display = 'block';
                 room.localParticipant.audioTracks.forEach(function (track) {
                     track.track.enable();
                 })
             }
 
-            document.getElementById("VideoOff").onclick = function () {
+            document.getElementById("VideoOff" + identity).onclick = function () {
                 console.log("VideoOff");
-                document.getElementById("VideoOn").style.display = 'block';
-                document.getElementById("VideoOff").style.display = 'none';
+                document.getElementById("VideoOn" + identity).style.display = 'block';
+                document.getElementById("VideoOff" + identity).style.display = 'none';
                 room.localParticipant.videoTracks.forEach(function (track) {
                     track.track.disable();
                 })
             }
-
-            document.getElementById("VideoOn").onclick = function () {
+            document.getElementById("VideoOn" + identity).onclick = function () {
                 console.log("VideoOn");
-                document.getElementById("VideoOn").style.display = 'none';
-                document.getElementById("VideoOff").style.display = 'block';
+                document.getElementById("VideoOn" + identity).style.display = 'none';
+                document.getElementById("VideoOff" + identity).style.display = 'block';
                 room.localParticipant.videoTracks.forEach(function (track) {
                     track.track.enable();
                 })
             }
-
-
-           
+                     
         });
+    
     }
+
+   
 
     //function attachTrack(participant, track) {
     //    const id = `participant-${participant.sid}`;
@@ -138,7 +138,87 @@ window.addEventListener("load", () => {
 
 
     function participantConnected(participant) {
-        console.log("Participant : " + participant);
+        console.log("Participant : " + participant);      
+
+        // Create new <div> for participant and add it to the page
+        var hostUser = participant.identity;
+
+        var cssClass = "";
+        if (hostUser == participant.identity) {
+            cssClass = "hostUser";
+        }
+        else {
+            cssClass = "guestUser";
+        }
+        var el = document.createElement("div");
+        el.setAttribute("id", hostUser);
+        el.setAttribute("class", cssClass);
+        console.log("id " + hostUser);
+
+        var guestName = document.createElement("p");
+        guestName.setAttribute("id", "p_" + hostUser);   
+        guestName.setAttribute("class", "name");
+
+        //Start Video Element 
+        var videoPanel = document.createElement("p");
+        videoPanel.setAttribute("class", "video");
+
+        var videoOff = document.createElement("span");
+        videoOff.setAttribute("id", "VideoOff" + hostUser);
+
+        var videoOffIcon = document.createElement("i");
+        videoOffIcon.setAttribute("class", "fa fa-video-camera videoOff");
+        videoOffIcon.setAttribute("aria-hidden", "true");
+
+        var videoOn = document.createElement("span");
+        videoOn.setAttribute("id", "VideoOn" + hostUser);
+        videoOn.setAttribute("class", "VideoOn");
+
+        var videoOnIcon = document.createElement("i");
+        videoOnIcon.setAttribute("class", "fa fa-video-camera videoOn");
+        videoOnIcon.setAttribute("aria-hidden", "true");
+        //End Video Element
+
+        //Start Audio Element
+        var AudioPanel = document.createElement("p");
+        AudioPanel.setAttribute("class", "audio");
+
+        var AudioOff = document.createElement("span");
+        AudioOff.setAttribute("id", "mute" + hostUser);
+
+        var AudiooffIcon = document.createElement("i");
+        AudiooffIcon.setAttribute("class", "fa fa-microphone videoOff");
+        AudiooffIcon.setAttribute("aria-hidden", "true");
+
+        var AudioOn = document.createElement("span");
+        AudioOn.setAttribute("id", "unmute" + hostUser);
+        AudioOn.setAttribute("class", "AudioOn");
+
+        var AudioOnIcon = document.createElement("i");
+        AudioOnIcon.setAttribute("class", "fa fa-microphone-slash audioOn");
+        AudioOnIcon.setAttribute("aria-hidden", "true");
+        //End Audion Element
+
+       
+
+      
+        participants.appendChild(el);
+
+        el.appendChild(videoPanel);
+        videoPanel.appendChild(videoOff);
+        videoPanel.appendChild(videoOn);
+        videoOff.appendChild(videoOffIcon);
+        videoOn.appendChild(videoOnIcon);
+
+        el.appendChild(AudioPanel);
+        AudioPanel.appendChild(AudioOff);
+        AudioPanel.appendChild(AudioOn);
+        AudioOff.appendChild(AudiooffIcon);
+        AudioOn.appendChild(AudioOnIcon);
+
+        el.appendChild(guestName);       
+        var userName = hostUser.split("-");
+        document.getElementById("p_" + hostUser).innerHTML = userName[0];
 
         navigator.getMedia = (navigator.getUserMedia || // use the proper vendor prefix
             navigator.webkitGetUserMedia ||
@@ -148,30 +228,9 @@ window.addEventListener("load", () => {
         navigator.getMedia({ video: true }, function () {
             console.log("webcam is available");
         }, function () {
-            console.log("webcam is not available");
+                el.setAttribute("class", "noVideo");
         });
 
-        // Create new <div> for participant and add it to the page
-        var hostUser = getUrlParameter("name");
-        var cssClass = "";
-        if (hostUser == participant.identity) {
-            cssClass = "hostUser";
-        }
-        else {
-            cssClass = "guestUser";
-        }
-        var el = document.createElement("div");
-        el.setAttribute("id", participant.identity);
-        el.setAttribute("class", cssClass);
-        console.log("id " + participant.identity);
-
-        var guestName = document.createElement("p");
-        guestName.setAttribute("id", "p_" + participant.identity);   
-        guestName.setAttribute("class", "name");
-        //document.getElementById("sp_" + participant.identity).textContent = participant.identity;
-        participants.appendChild(el);
-        participants.appendChild(guestName);
-        document.getElementById("p_" + participant.identity).innerHTML = participant.identity;
         // Find all the participant's existing tracks and publish them to our page
 
         participant.tracks.forEach((trackPublication) => {
@@ -179,11 +238,22 @@ window.addEventListener("load", () => {
         });
         // Listen for the participant publishing new tracks
         participant.on("trackPublished", trackPublished);
+
+       
+       
     }
+
+  
 
     function trackPublished(trackPublication, participant) {
         // Get the participant's <div> we created earlier
+        console.log("trackPublication : " + trackPublication);
+        console.log("participant : " + participant);
         var el = document.getElementById(participant.identity);
+        var videoStop = document.getElementById("VideoOff" + participant.identity);
+        var videoStart = document.getElementById("VideoOn" + participant.identity);
+        var auidomute = document.getElementById("mute" + participant.identity);
+        var auidounmute = document.getElementById("unmute" + participant.identity);
         // Find out if the track has been subscribed to and add it to the page or
         // listen for the subscription, then add it to the page.
 
@@ -192,6 +262,10 @@ window.addEventListener("load", () => {
             // track.attach() creates the media elements <video> and <audio> to
             // to display the track on the page.
             el.appendChild(track.attach());
+            //videoStop.appendChild(track.attach());
+            //videoStart.appendChild(track.attach());
+            //auidomute.appendChild(track.attach());
+            //auidounmute.appendChild(track.attach());
         };
         // If the track is already subscribed, add it immediately to the page
         if (trackPublication.track) {
@@ -203,6 +277,7 @@ window.addEventListener("load", () => {
     }
 
     function participantDisconnected(participant) {
+        console.log("participantDisconnected : "+participant);
         participant.removeAllListeners();
         var el = document.getElementById(participant.identity);
         var guestName = document.getElementById("p_" + participant.identity);
@@ -223,6 +298,7 @@ window.addEventListener("load", () => {
   
 
     function tidyUp(room) {
+        console.log("TidyUp : "+room);
         return function (event) {
             if (event.persisted) {
                 return;
