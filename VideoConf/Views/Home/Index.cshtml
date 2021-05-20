@@ -20,20 +20,18 @@
                 <div id="chat" style="float: right;" hidden>
                     <!--<p class="textName">Joining <span id="room"></span> as <span id="username"></span></p>-->
                     <span id="room" style="display: none;"></span>
+                    <p class="name" style="display:none;">
+                        <span id="username"></span>
+                    </p>
                     <div class="videos">
                         <div id="video-container">
                             <div id="participants">
-                                <p class="name" style="display:none;">
-                                    <span id="username"></span>
-                                </p>
-                                <p class="video">
-                                    <span id="VideoOff"><i style="color: white; float: right;  margin-right: 9px;" class="fas fa-video"></i></span>
-                                    <span id="VideoOn" style="display: none;"><i style="color: red; float: right;  margin-right: 9px;" class="fas fa-video"></i></span>
-                                </p>
-                                <p class="audio">
-                                    <span id="mute"><i style="color: white; float: right;  margin-right: 9px;" class="fas fa-microphone-alt"></i></span>
-                                    <span style="display: none;" id="unmute"><i style="color: red; float: right;  margin-right: 9px;" class="fas fa-microphone-alt-slash"></i></span>
-                                </p>
+
+                                @*
+                    <p class="audio">
+                        <span id="mute"><i style="color: white; float: right;  margin-right: 9px;" class="fa fa-microphone" aria-hidden="true"></i></span>
+                        <span style="display: none;" id="unmute"><i style="color: red; float: right;  margin-right: 9px;" class="fa fa-microphone-slash" aria-hidden="true"></i></span>
+                    </p>*@
                             </div>
                         </div>
                     </div>
@@ -43,19 +41,11 @@
         </div>
     </div>
 </div>
-<div class="col-md-6" style="display:none;">
-    <section>
-        <div id="messages"></div>
-        <input id="chat-input" type="text" placeholder="say anything" autofocus />
-    </section>
-</div>
+
 
 
 
 @section scripts {
     <script src="https://media.twiliocdn.com/sdk/js/video/releases/2.7.2/twilio-video.min.js"></script>
     <script src="~/js/video.js"></script>
-    <script src="https://media.twiliocdn.com/sdk/js/chat/releases/4.0.0/twilio-chat.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="~/js/chat.js"></script>
 }

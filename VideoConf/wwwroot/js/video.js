@@ -33,7 +33,7 @@ window.addEventListener("load", () => {
     //        });
     //});
 
-    var identity = getUrlParameter("name");
+    var identity = getUrlParameter("name") + Math.floor(Math.random() * 100); 
     //login.setAttribute("hidden", "true");
     // Fetch the access token
     data = "{identity:'" + identity + "'}";
@@ -74,47 +74,57 @@ window.addEventListener("load", () => {
             window.addEventListener("pagehide", tidyUp(room));
 
 
-            document.getElementById("mute").onclick = function () {
-                console.log("Mute");
-                document.getElementById("unmute").style.display = 'block';
-                document.getElementById("mute").style.display = 'none';
-                room.localParticipant.audioTracks.forEach(function (track) {
+            //document.getElementById("mute").onclick = function () {
+            //    console.log("Mute");
+            //    document.getElementById("unmute").style.display = 'block';
+            //    document.getElementById("mute").style.display = 'none';
+            //    room.localParticipant.audioTracks.forEach(function (track) {
+            //        track.track.disable();
+            //    })
+            //}
+
+            //document.getElementById("unmute").onclick = function () {
+            //    console.log("Unmute");
+            //    document.getElementById("unmute").style.display = 'none';
+            //    document.getElementById("mute").style.display = 'block';
+            //    room.localParticipant.audioTracks.forEach(function (track) {
+            //        track.track.enable();
+            //    })
+            //}
+
+            document.getElementById("VideoOff" + identity).onclick = function () {
+                console.log("VideoOff");
+                document.getElementById("VideoOn" + identity).style.display = 'block';
+                document.getElementById("VideoOff" + identity).style.display = 'none';
+                room.localParticipant.videoTracks.forEach(function (track) {
                     track.track.disable();
                 })
             }
-
-            document.getElementById("unmute").onclick = function () {
-                console.log("Unmute");
-                document.getElementById("unmute").style.display = 'none';
-                document.getElementById("mute").style.display = 'block';
-                room.localParticipant.audioTracks.forEach(function (track) {
-                    track.track.enable();
-                })
-            }
-
-            document.getElementById("VideoOff").onclick = function () {
-                console.log("VideoOff");
-                document.getElementById("VideoOn").style.display = 'block';
-                document.getElementById("VideoOff").style.display = 'none';
-                room.localParticipant.videoTracks.forEach(function (track) {
-                    track.track.enable();
-                })
-            }
-
-            document.getElementById("VideoOn").onclick = function () {
+            document.getElementById("VideoOn" + identity).onclick = function () {
                 console.log("VideoOn");
-                document.getElementById("VideoOn").style.display = 'none';
-                document.getElementById("VideoOff").style.display = 'block';
+                document.getElementById("VideoOn" + identity).style.display = 'none';
+                document.getElementById("VideoOff" + identity).style.display = 'block';
                 room.localParticipant.videoTracks.forEach(function (track) {
                     track.track.enable();
                 })
             }
-
-
+                     
         });
+    
     }
 
+   
 
+    //function attachTrack(participant, track) {
+    //    const id = `participant-${participant.sid}`;
+    //    const video = document.getElementById(id) || document.createElement('video');
+    //    video.id = id;
+    //    track.attach(video);
+    //    if (participant.identity === 'someone-i-want-to-mute') {
+    //        video.muted = true;
+    //    }
+    //    document.body.appendChild(video);
+    //}
 
 
 
@@ -142,7 +152,8 @@ window.addEventListener("load", () => {
         });
 
         // Create new <div> for participant and add it to the page
-        var hostUser = getUrlParameter("name");
+        var hostUser = participant.identity;
+
         var cssClass = "";
         if (hostUser == participant.identity) {
             cssClass = "hostUser";
@@ -151,17 +162,73 @@ window.addEventListener("load", () => {
             cssClass = "guestUser";
         }
         var el = document.createElement("div");
-        el.setAttribute("id", participant.identity);
+        el.setAttribute("id", hostUser);
         el.setAttribute("class", cssClass);
-        console.log("id " + participant.identity);
+        console.log("id " + hostUser);
 
         var guestName = document.createElement("p");
-        guestName.setAttribute("id", "p_" + participant.identity);   
+        guestName.setAttribute("id", "p_" + hostUser);   
         guestName.setAttribute("class", "name");
-        //document.getElementById("sp_" + participant.identity).textContent = participant.identity;
+
+        //Start Video Element 
+        var videoPanel = document.createElement("p");
+        videoPanel.setAttribute("class", "video");
+
+        var videoOff = document.createElement("span");
+        videoOff.setAttribute("id", "VideoOff" + hostUser);
+
+        var videoOffIcon = document.createElement("i");
+        videoOffIcon.setAttribute("class", "fa fa-video-camera videoOff");
+        videoOffIcon.setAttribute("aria-hidden", "true");
+
+        var videoOn = document.createElement("span");
+        videoOn.setAttribute("id", "VideoOn" + hostUser);
+        videoOn.setAttribute("class", "VideoOn");
+
+        var videoOnIcon = document.createElement("i");
+        videoOnIcon.setAttribute("class", "fa fa-video-camera videoOn");
+        videoOnIcon.setAttribute("aria-hidden", "true");
+        //End Video Element
+
+        //Start Audio Element
+        var AudioPanel = document.createElement("p");
+        AudioPanel.setAttribute("class", "audio");
+
+        var AudioOff = document.createElement("span");
+        AudioOff.setAttribute("id", "mute" + hostUser);
+
+        var AudiooffIcon = document.createElement("i");
+        AudiooffIcon.setAttribute("class", "fa fa-microphone");
+        AudiooffIcon.setAttribute("aria-hidden", "true");
+
+        var AudioOn = document.createElement("span");
+        AudioOn.setAttribute("id", "AudioOn" + hostUser);
+        AudioOn.setAttribute("class", "AudioOn");
+
+        var AudioOnIcon = document.createElement("i");
+        AudioOnIcon.setAttribute("class", "fa fa-microphone-slash audioOn");
+        AudioOnIcon.setAttribute("aria-hidden", "true");
+        //End Audion Element
+
+
+      
         participants.appendChild(el);
-        participants.appendChild(guestName);
-        document.getElementById("p_" + participant.identity).innerHTML = participant.identity;
+
+        el.appendChild(videoPanel);
+        videoPanel.appendChild(videoOff);
+        videoPanel.appendChild(videoOn);
+        videoOff.appendChild(videoOffIcon);
+        videoOn.appendChild(videoOnIcon);
+
+        el.appendChild(AudioPanel);
+        AudioPanel.appendChild(AudioOff);
+        AudioPanel.appendChild(AudioOn);
+        AudioOff.appendChild(AudiooffIcon);
+        AudioOn.appendChild(AudioOnIcon);
+
+        el.appendChild(guestName);       
+        document.getElementById("p_" + hostUser).innerHTML = getUrlParameter("name");
+       
         // Find all the participant's existing tracks and publish them to our page
 
         participant.tracks.forEach((trackPublication) => {
@@ -169,10 +236,17 @@ window.addEventListener("load", () => {
         });
         // Listen for the participant publishing new tracks
         participant.on("trackPublished", trackPublished);
+
+       
+       
     }
+
+  
 
     function trackPublished(trackPublication, participant) {
         // Get the participant's <div> we created earlier
+        console.log("trackPublication : " + trackPublication);
+        console.log("participant : " + participant);
         var el = document.getElementById(participant.identity);
         // Find out if the track has been subscribed to and add it to the page or
         // listen for the subscription, then add it to the page.
@@ -193,10 +267,16 @@ window.addEventListener("load", () => {
     }
 
     function participantDisconnected(participant) {
+        console.log("participantDisconnected : "+participant);
         participant.removeAllListeners();
         var el = document.getElementById(participant.identity);
+        var guestName = document.getElementById("p_" + participant.identity);
         el.remove();
+        guestName.remove();
     }
+
+   
+
 
     function trackUnpublished(trackPublication) {
         trackPublication.track.detach().forEach(function (mediaElement) {
@@ -208,6 +288,7 @@ window.addEventListener("load", () => {
   
 
     function tidyUp(room) {
+        console.log("TidyUp : "+room);
         return function (event) {
             if (event.persisted) {
                 return;
