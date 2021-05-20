@@ -138,18 +138,7 @@ window.addEventListener("load", () => {
 
 
     function participantConnected(participant) {
-        console.log("Participant : " + participant);
-
-        navigator.getMedia = (navigator.getUserMedia || // use the proper vendor prefix
-            navigator.webkitGetUserMedia ||
-            navigator.mozGetUserMedia ||
-            navigator.msGetUserMedia);
-
-        navigator.getMedia({ video: true }, function () {
-            console.log("webcam is available");
-        }, function () {
-            console.log("webcam is not available");
-        });
+        console.log("Participant : " + participant);      
 
         // Create new <div> for participant and add it to the page
         var hostUser = participant.identity;
@@ -210,6 +199,7 @@ window.addEventListener("load", () => {
         AudioOnIcon.setAttribute("aria-hidden", "true");
         //End Audion Element
 
+       
 
       
         participants.appendChild(el);
@@ -228,7 +218,18 @@ window.addEventListener("load", () => {
 
         el.appendChild(guestName);       
         document.getElementById("p_" + hostUser).innerHTML = getUrlParameter("name");
-       
+
+        navigator.getMedia = (navigator.getUserMedia || // use the proper vendor prefix
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia);
+
+        navigator.getMedia({ video: true }, function () {
+            console.log("webcam is available");
+        }, function () {
+                el.setAttribute("class", "noVideo");
+        });
+
         // Find all the participant's existing tracks and publish them to our page
 
         participant.tracks.forEach((trackPublication) => {
@@ -248,6 +249,10 @@ window.addEventListener("load", () => {
         console.log("trackPublication : " + trackPublication);
         console.log("participant : " + participant);
         var el = document.getElementById(participant.identity);
+        var videoStop = document.getElementById("VideoOff" + participant.identity);
+        var videoStart = document.getElementById("VideoOn" + participant.identity);
+        var auidomute = document.getElementById("mute" + participant.identity);
+        var auidounmute = document.getElementById("unmute" + participant.identity);
         // Find out if the track has been subscribed to and add it to the page or
         // listen for the subscription, then add it to the page.
 
@@ -256,6 +261,10 @@ window.addEventListener("load", () => {
             // track.attach() creates the media elements <video> and <audio> to
             // to display the track on the page.
             el.appendChild(track.attach());
+            //videoStop.appendChild(track.attach());
+            //videoStart.appendChild(track.attach());
+            //auidomute.appendChild(track.attach());
+            //auidounmute.appendChild(track.attach());
         };
         // If the track is already subscribed, add it immediately to the page
         if (trackPublication.track) {
