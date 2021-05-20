@@ -74,23 +74,23 @@ window.addEventListener("load", () => {
             window.addEventListener("pagehide", tidyUp(room));
 
 
-            //document.getElementById("mute").onclick = function () {
-            //    console.log("Mute");
-            //    document.getElementById("unmute").style.display = 'block';
-            //    document.getElementById("mute").style.display = 'none';
-            //    room.localParticipant.audioTracks.forEach(function (track) {
-            //        track.track.disable();
-            //    })
-            //}
+            document.getElementById("mute" + identity).onclick = function () {
+                console.log("Mute");
+                document.getElementById("unmute" + identity).style.display = 'block';
+                document.getElementById("mute" + identity).style.display = 'none';
+                room.localParticipant.audioTracks.forEach(function (track) {
+                    track.track.disable();
+                })
+            }
 
-            //document.getElementById("unmute").onclick = function () {
-            //    console.log("Unmute");
-            //    document.getElementById("unmute").style.display = 'none';
-            //    document.getElementById("mute").style.display = 'block';
-            //    room.localParticipant.audioTracks.forEach(function (track) {
-            //        track.track.enable();
-            //    })
-            //}
+            document.getElementById("unmute" + identity).onclick = function () {
+                console.log("Unmute");
+                document.getElementById("unmute" + identity).style.display = 'none';
+                document.getElementById("mute" + identity).style.display = 'block';
+                room.localParticipant.audioTracks.forEach(function (track) {
+                    track.track.enable();
+                })
+            }
 
             document.getElementById("VideoOff" + identity).onclick = function () {
                 console.log("VideoOff");
@@ -198,11 +198,11 @@ window.addEventListener("load", () => {
         AudioOff.setAttribute("id", "mute" + hostUser);
 
         var AudiooffIcon = document.createElement("i");
-        AudiooffIcon.setAttribute("class", "fa fa-microphone");
+        AudiooffIcon.setAttribute("class", "fa fa-microphone videoOff");
         AudiooffIcon.setAttribute("aria-hidden", "true");
 
         var AudioOn = document.createElement("span");
-        AudioOn.setAttribute("id", "AudioOn" + hostUser);
+        AudioOn.setAttribute("id", "unmute" + hostUser);
         AudioOn.setAttribute("class", "AudioOn");
 
         var AudioOnIcon = document.createElement("i");
