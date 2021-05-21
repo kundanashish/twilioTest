@@ -49,16 +49,51 @@ window.addEventListener("load", () => {
             usernameSpan.textContent = identity;
             roomSpan.textContent = room;
             chat.removeAttribute("hidden");
-            startVideoChat(room, token);
+            checkDeviceAndStartVideoChat(room, token);
         });
 
 
-    function startVideoChat(room, token) {
+    function checkDeviceAndStartVideoChat(room, token) {
+        var haveVideo = false;
+        var haveAudio = false;
+        navigator.getMedia = (navigator.getUserMedia || // use the proper vendor prefix
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia);
+
+        navigator.getMedia({ video: true }, function () {
+            console.log("webcam is available");
+            haveVideo = true;
+            navigator.getMedia({ audio: true }, function () {
+                console.log("audio is available");
+                haveAudio = true;
+                startVideoChat(room, token, haveVideo, haveAudio)
+            }, function () {
+                console.log("audio not available");
+                haveAudio = false;
+                startVideoChat(room, token, haveVideo, haveAudio)
+            });
+        }, function () {
+            console.log("webcam not available");
+            haveVideo = false;
+            navigator.getMedia({ audio: true }, function () {
+                console.log("audio is available");
+                haveAudio = true;
+                startVideoChat(room, token, haveVideo, haveAudio)
+            }, function () {
+                haveAudio = false;
+                console.log("audio not available");
+                startVideoChat(room, token, haveVideo, haveAudio)
+            });
+        });
+    }
+
+    function startVideoChat(room, token, haveVideo, haveAudio) {
         // Start video chat and listen to participant connected events
         Twilio.Video.connect(token, {
             room: room,
-            audio: true,
-            video: true,
+            video: haveVideo,
+            audio: haveAudio
         }).then((room) => {
             // Once we're connected to the room, add the local participant to the page
             participantConnected(room.localParticipant);
@@ -69,6 +104,21 @@ window.addEventListener("load", () => {
             room.on("participantConnected", participantConnected);
             // Listen for participants to leave the room and remove them from the page
             room.on("participantDisconnected", participantDisconnected);
+            //room.on("participantAction", participantAction);
+         
+            //room.on("trackSubscribed", function (track) {
+            //    track.on("message", function (message) {
+            //        var messageBody = JSON.parse(message);
+            //        console.log("message" + messageBody);
+            //        if (messageBody.type === "REMOVE_FROM_CALL") {
+            //            if (messageBody.participant.identity === room.localParticipant.identity) {
+            //                room.disconnect();
+            //                history.push("/");
+            //            }
+            //        }
+            //    });
+            //});
+
             // Eject the participant from the room if they reload or leave the page
             window.addEventListener("beforeunload", tidyUp(room));
             window.addEventListener("pagehide", tidyUp(room));
@@ -78,8 +128,9 @@ window.addEventListener("load", () => {
                 console.log("Mute");
                 document.getElementById("unmute" + identity).style.display = 'block';
                 document.getElementById("mute" + identity).style.display = 'none';
-                room.localParticipant.audioTracks.forEach(function (track) {
-                    track.track.disable();
+                room.localParticipant.audioTracks.forEach(function (track) {                   
+                    track.track.disable();   
+                    
                 })
             }
 
@@ -97,7 +148,8 @@ window.addEventListener("load", () => {
                 document.getElementById("VideoOn" + identity).style.display = 'block';
                 document.getElementById("VideoOff" + identity).style.display = 'none';
                 room.localParticipant.videoTracks.forEach(function (track) {
-                    track.track.disable();
+                    track.track.disable();  
+                   
                 })
             }
             document.getElementById("VideoOn" + identity).onclick = function () {
@@ -108,7 +160,10 @@ window.addEventListener("load", () => {
                     track.track.enable();
                 })
             }
-                     
+
+            //var videoBox = document.getElementsByTagName("video").attr("id", "videoId");
+            //console.log(videoBox);
+            //videoBox.setAttribute("class", "video");
         });
     
     }
@@ -153,7 +208,6 @@ window.addEventListener("load", () => {
         var el = document.createElement("div");
         el.setAttribute("id", hostUser);
         el.setAttribute("class", cssClass);
-        console.log("id " + hostUser);
 
         var guestName = document.createElement("p");
         guestName.setAttribute("id", "p_" + hostUser);   
@@ -198,9 +252,6 @@ window.addEventListener("load", () => {
         AudioOnIcon.setAttribute("class", "fa fa-microphone-slash audioOn");
         AudioOnIcon.setAttribute("aria-hidden", "true");
         //End Audion Element
-
-       
-
       
         participants.appendChild(el);
 
@@ -220,40 +271,36 @@ window.addEventListener("load", () => {
         var userName = hostUser.split("-");
         document.getElementById("p_" + hostUser).innerHTML = userName[0];
 
-        navigator.getMedia = (navigator.getUserMedia || // use the proper vendor prefix
-            navigator.webkitGetUserMedia ||
-            navigator.mozGetUserMedia ||
-            navigator.msGetUserMedia);
+        //var videoStop = document.getElementById("VideoOff" + hostUser);
+        //var videoStart = document.getElementById("VideoOn" + hostUser);
 
-        navigator.getMedia({ video: true }, function () {
-            console.log("webcam is available");
-        }, function () {
-                el.setAttribute("class", "noVideo");
-        });
+        //console.log("P"+participant.identity);
+        //console.log("H"+hostUser);
 
+        //videoStop.setAttribute("style", "display:none");
+        //videoStart.setAttribute("style", "display:block");
+      
         // Find all the participant's existing tracks and publish them to our page
 
         participant.tracks.forEach((trackPublication) => {
-            trackPublished(trackPublication, participant);
+            trackPublished(trackPublication, participant);           
         });
         // Listen for the participant publishing new tracks
-        participant.on("trackPublished", trackPublished);
-
-       
+        participant.on("trackPublished", trackPublished);        
        
     }
 
   
 
     function trackPublished(trackPublication, participant) {
-        // Get the participant's <div> we created earlier
-        console.log("trackPublication : " + trackPublication);
-        console.log("participant : " + participant);
+        // Get the participant's <div> we created earlier       
         var el = document.getElementById(participant.identity);
+
         var videoStop = document.getElementById("VideoOff" + participant.identity);
         var videoStart = document.getElementById("VideoOn" + participant.identity);
         var auidomute = document.getElementById("mute" + participant.identity);
         var auidounmute = document.getElementById("unmute" + participant.identity);
+        
         // Find out if the track has been subscribed to and add it to the page or
         // listen for the subscription, then add it to the page.
 
@@ -261,28 +308,40 @@ window.addEventListener("load", () => {
         var trackSubscribed = (track) => {
             // track.attach() creates the media elements <video> and <audio> to
             // to display the track on the page.
-            el.appendChild(track.attach());
-            //videoStop.appendChild(track.attach());
-            //videoStart.appendChild(track.attach());
-            //auidomute.appendChild(track.attach());
-            //auidounmute.appendChild(track.attach());
+
+            //el.appendChild(videoStop);
+            //el.appendChild(videoStart);
+            //el.appendChild(auidomute);
+            //el.appendChild(auidounmute);
+        
+            el.appendChild(track.attach());   
         };
         // If the track is already subscribed, add it immediately to the page
         if (trackPublication.track) {
             trackSubscribed(trackPublication.track);
+
+            
         }
         // Otherwise listen for the track to be subscribed to, then add it to the
         // page
-        trackPublication.on("subscribed", trackSubscribed);
+        trackPublication.on("subscribed", trackSubscribed); 
+        
     }
 
-    function participantDisconnected(participant) {
-        console.log("participantDisconnected : "+participant);
+    function participantDisconnected(participant) {      
         participant.removeAllListeners();
         var el = document.getElementById(participant.identity);
         var guestName = document.getElementById("p_" + participant.identity);
         el.remove();
         guestName.remove();
+    }
+
+    function participantAction(participant) {
+        var videoStop = document.getElementById("VideoOff" + participant.identity);
+        var videoStart = document.getElementById("VideoOn" + participant.identity);
+
+        videoStop.setAttribute("style", "display:none");
+        videoStart.setAttribute("style", "display:block");
     }
 
    
@@ -294,11 +353,8 @@ window.addEventListener("load", () => {
         });
     }
 
-
-  
-
     function tidyUp(room) {
-        console.log("TidyUp : "+room);
+        console.log("Room : " + room);
         return function (event) {
             if (event.persisted) {
                 return;

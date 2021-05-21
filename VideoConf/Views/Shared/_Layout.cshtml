@@ -47,7 +47,7 @@
             z-index: 9999;
         }
 
-       
+
 
         .col-md-6 {
             width: 48% !important;
@@ -103,6 +103,16 @@
         }
         .noVideo video{
             display:none;
+        }
+        #either-gif-or-video video { display: none; }
+        @@media print (-webkit-video-playable-inline) {
+            #either-gif-or-video img {
+                display: none;
+            }
+
+            #either-gif-or-video video {
+                display: initial;
+            }
         }
     </style>
 </head>
