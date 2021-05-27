@@ -106,16 +106,23 @@ window.addEventListener("load", () => {
             room.on("participantDisconnected", participantDisconnected);
             //room.on("participantAction", participantAction);
          
-            //room.on("trackSubscribed", function (track) {
-            //    track.on("message", function (message) {
-            //        var messageBody = JSON.parse(message);
-            //        console.log("message" + messageBody);
-            //        if (messageBody.type === "REMOVE_FROM_CALL") {
-            //            if (messageBody.participant.identity === room.localParticipant.identity) {
-            //                room.disconnect();
-            //                history.push("/");
-            //            }
+            //room.participants.forEach(participant => {
+            //    participant.tracks.forEach(publication => {
+            //        if (publication.track) {
+            //            document.getElementById('remote-media-div').appendChild(publication.track.attach());
+
+            //            publication.track.on('disabled', () => {
+            //                document.getElementById("unmute" + participant.identity).style.display = 'block';
+            //            });
             //        }
+            //    });
+
+            //    participant.on('trackSubscribed', track => {
+            //        document.getElementById('remote-media-div').appendChild(track.attach());
+
+            //        track.on('disabled', () => {
+            //            document.getElementById("unmute" + participant.identity).style.display = 'block';
+            //        });
             //    });
             //});
 
